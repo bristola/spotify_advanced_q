@@ -8,16 +8,16 @@ import org.springframework.ui.Model;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 import org.springframework.context.annotation.Scope;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import com.wrapper.spotify.model_objects.specification.PlaylistSimplified;
-import com.wrapper.spotify.model_objects.specification.Playlist;
+// import org.springframework.web.bind.annotation.RequestMethod;
+// import org.springframework.web.bind.annotation.ModelAttribute;
+// import com.wrapper.spotify.model_objects.specification.PlaylistSimplified;
+// import com.wrapper.spotify.model_objects.specification.Playlist;
 import java.io.IOException;
-import java.util.List;
+// import java.util.List;
 import spotify.SpotifyUser;
 import spotify.SpotifyUtils;
-import spotify.Song;
-import data.FilterOptions;
+// import spotify.Song;
+// import data.FilterOptions;
 
 /**
  * Controller which hadles all the requests after the user is already logged in.
@@ -76,72 +76,12 @@ public class SpotifyController {
         return "options";
     }
 
-    /*
-        Returns an HTML page with all their playlists the user can add from.
-    */
-    @RequestMapping(value = "/addToPlaylist")
+    @RequestMapping(value = "/queues")
     public String addToPlaylist(Model model) {
         if (spotifyUser == null) {
             return "errorPage";
         }
-        PlaylistSimplified[] playlists = spotifyUser.getUserPlaylists();
-        model.addAttribute("playlists", playlists);
-        return "playlistCreator";
-    }
-
-    /*
-        Filter page, where options are set for all available artists, genres,
-        etc. can be selected by the user to filter songs by. User selects a
-        playlist to add to and the types of songs they want from the selected
-        playlist.
-    */
-    @RequestMapping(value = "/addToPlaylist/addSongs", params = "playlistID", method = RequestMethod.GET)
-    public String addSongs(@RequestParam("playlistID") String playlistID, Model model) {
-        if (spotifyUser == null) {
-            return "errorPage";
-        }
-        SpotifyUtils su = new SpotifyUtils();
-        PlaylistSimplified[] playlists = spotifyUser.getUserPlaylists();
-        Playlist p = spotifyUser.getPlaylistByID(playlistID);
-        List<Song> songs = spotifyUser.getTracksFromPlaylist(p);
-        List<String> genres = su.getGenres(songs);
-        List<String> albums = su.getAlbums(songs);
-        List<String> artists = su.getArtists(songs);
-
-        model.addAttribute("playlists", playlists);
-        model.addAttribute("genres", genres);
-        model.addAttribute("albums", albums);
-        model.addAttribute("artists", artists);
-        model.addAttribute("playlistName", p.getName());
-        model.addAttribute("filterOptions", new FilterOptions());
-        model.addAttribute("playlistID", playlistID);
-
-        return "addSongs";
-    }
-
-    /*
-        Post request for adding songs. Takes all the filter options, and applys
-        them to the selected playlist. Adds valid songs to a playlist.
-    */
-    @RequestMapping(value = "/addToPlaylist/addSongs", params = "playlistID", method = RequestMethod.POST)
-    public ModelAndView addSongsSubmit(@RequestParam("playlistID") String playlistID, @ModelAttribute FilterOptions filterOptions, Model model) {
-        SpotifyUtils su = new SpotifyUtils();
-        Playlist p = spotifyUser.getPlaylistByID(playlistID);
-        List<Song> songs = spotifyUser.getTracksFromPlaylist(p);
-        List<Song> filtered = su.filterSongs(songs, filterOptions);
-        spotifyUser.addSongsToPlaylist(filterOptions.getPlaylistAdd(), filtered);
-        return new ModelAndView(new RedirectView("/addToPlaylist/success"));
-    }
-
-    /*
-        Success page after adding songs to spotify.
-    */
-    @RequestMapping(value = "/addToPlaylist/success")
-    public String success() {
-        if (spotifyUser == null) {
-            return "errorPage";
-        }
-        return "success";
+        return "queues";
     }
 
     /*
