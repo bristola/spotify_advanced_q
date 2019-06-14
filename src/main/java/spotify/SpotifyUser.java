@@ -208,4 +208,8 @@ public class SpotifyUser {
         }
     }
 
+    public String getUserID() {
+        return userID;
+    }
+
 }
