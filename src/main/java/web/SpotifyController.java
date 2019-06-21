@@ -1,5 +1,6 @@
 package web;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.context.annotation.ComponentScan;
@@ -8,16 +9,19 @@ import org.springframework.ui.Model;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 import org.springframework.context.annotation.Scope;
+// import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 // import org.springframework.web.bind.annotation.RequestMethod;
 // import org.springframework.web.bind.annotation.ModelAttribute;
 // import com.wrapper.spotify.model_objects.specification.PlaylistSimplified;
 // import com.wrapper.spotify.model_objects.specification.Playlist;
 import java.io.IOException;
-// import java.util.List;
+import java.util.List;
 import spotify.SpotifyUser;
 import spotify.SpotifyUtils;
 // import spotify.Song;
 // import data.FilterOptions;
+import repos.UserRepository;
+import data.User;
 
 /**
  * Controller which hadles all the requests after the user is already logged in.
@@ -29,6 +33,9 @@ import spotify.SpotifyUtils;
 @Controller
 @Scope("session")
 public class SpotifyController {
+
+    @Autowired
+    UserRepository userRepository;
 
     // Instance variable for the current spotifyUser who signed in.
     private SpotifyUser spotifyUser = null;
@@ -70,6 +77,11 @@ public class SpotifyController {
     */
     @RequestMapping(value = "/options")
     public String pickOptions() {
+        List<User> allUsers = userRepository.findAll();
+        for (User user : allUsers) {
+            System.out.println("HELLO");
+            System.out.println(user.getUsername());
+        }
         if (spotifyUser == null) {
             return "errorPage";
         }

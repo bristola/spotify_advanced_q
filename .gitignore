@@ -3,3 +3,4 @@ spotify_settings.txt
 .gradle/
 build/
 bin/
+*.properties
