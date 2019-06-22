@@ -29,6 +29,9 @@ public class User implements Serializable {
     @Column(name = "username")
     private String username;
 
+    public User() {
+    }
+
     public User(String username) {
         this.username = username;
     }
