@@ -15,7 +15,7 @@ import org.springframework.context.annotation.Scope;
 // import com.wrapper.spotify.model_objects.specification.PlaylistSimplified;
 // import com.wrapper.spotify.model_objects.specification.Playlist;
 import java.io.IOException;
-import java.util.List;
+// import java.util.List;
 import spotify.SpotifyUser;
 import spotify.SpotifyUtils;
 // import spotify.Song;
@@ -67,7 +67,15 @@ public class SpotifyController {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         spotifyUser = new SpotifyUser(clientId, clientSecret, code);
+        String spotifyUsername = spotifyUser.getUserID();
+        User dbUser = userRepository.findByUsername(spotifyUsername);
+
+        if (dbUser == null) {
+            User newUser = new User(spotifyUsername);
+            userRepository.save(newUser);
+        }
 
         return new ModelAndView(new RedirectView("/options"));
     }
@@ -77,11 +85,6 @@ public class SpotifyController {
     */
     @RequestMapping(value = "/options")
     public String pickOptions() {
-        List<User> allUsers = userRepository.findAll();
-        for (User user : allUsers) {
-            System.out.println("HELLO");
-            System.out.println(user.getUsername());
-        }
         if (spotifyUser == null) {
             return "errorPage";
         }
