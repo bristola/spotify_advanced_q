@@ -85,11 +85,24 @@ public class SpotifyController {
     }
 
     @RequestMapping(value = "/queues")
-    public String addToPlaylist(Model model) {
+    public String queues(Model model) {
         if (spotifyUser == null) {
             return "errorPage";
         }
         return "queues";
+    }
+
+    @RequestMapping(value = "/create_queue", method = RequestMethod.GET)
+    public String createQueue(Model model) {
+        PlaylistSimplified[] playlists = spotifyUser.getUserPlaylists();
+        model.addAttribute("playlists", playlists);
+        return "create_queue"
+    }
+
+    @RequestMapping(value = "/create_queue", method = RequestMethod.POST)
+    public String createQueueSubmit(@ModelAttribute QueueInfo queueInfo, Model model) {
+        // Add queue info from submit to database
+        return new ModelAndView(new RedirectView("/queues"));
     }
 
     /*
