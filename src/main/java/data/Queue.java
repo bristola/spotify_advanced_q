@@ -26,7 +26,7 @@ public class Queue implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @Column(name = "queueName")
+    @Column(name = "queuename")
     private String queueName;
 
     @ManyToOne
@@ -39,8 +39,9 @@ public class Queue implements Serializable {
     public Queue() {
     }
 
-    public Queue(String queueName) {
+    public Queue(String queueName, User ownerUser) {
         this.queueName = queueName;
+        this.ownerUser = ownerUser;
     }
 
     public long getId() {
@@ -57,6 +58,10 @@ public class Queue implements Serializable {
 
     public Set<QueueComponent> getQueueComponents() {
         return queueComponents;
+    }
+
+    public void setQueueName(String queueName) {
+        this.queueName = queueName;
     }
 
 }

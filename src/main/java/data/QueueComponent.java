@@ -27,6 +27,9 @@ public class QueueComponent implements Serializable {
     @JoinColumn
     private Queue parentQueue;
 
+    @Column(name = "playlist")
+    private String playlist;
+
     @Column(name = "genres")
     private String genres;
 

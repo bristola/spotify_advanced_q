@@ -52,6 +52,10 @@ public class User implements Serializable {
         return created;
     }
 
+    public Set<Queue> getQueues() {
+        return queues;
+    }
+
     public void setUsername(String username) {
         this.username = username;
     }
@@ -59,4 +63,9 @@ public class User implements Serializable {
     public void setCreated(Date created) {
         this.created = created;
     }
+
+    public void addQueue(Queue queue) {
+        queues.add(queue);
+    }
+
 }

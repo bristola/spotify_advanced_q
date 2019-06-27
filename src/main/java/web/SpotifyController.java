@@ -24,6 +24,7 @@ import spotify.SpotifyUser;
 import repos.UserRepository;
 import data.User;
 import data.QueueInfo;
+import data.Queue;
 
 /**
  * Controller which hadles all the requests after the user is already logged in.
@@ -95,7 +96,11 @@ public class SpotifyController {
 
     @RequestMapping(value = "/create_queue", method = RequestMethod.GET)
     public String createQueue(Model model) {
-
+        String spotifyUsername = spotifyUser.getUserID();
+        User dbUser = userRepository.findByUsername(spotifyUsername);
+        Queue q = new Queue("new_queue", dbUser);
+        dbUser.addQueue(q);
+        userRepository.save(dbUser);
         return "create_queue";
     }
 
