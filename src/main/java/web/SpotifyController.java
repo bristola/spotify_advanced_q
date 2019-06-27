@@ -11,9 +11,9 @@ import org.springframework.web.servlet.view.RedirectView;
 import org.springframework.context.annotation.Scope;
 import org.springframework.beans.factory.annotation.Value;
 // import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-// import org.springframework.web.bind.annotation.RequestMethod;
-// import org.springframework.web.bind.annotation.ModelAttribute;
-// import com.wrapper.spotify.model_objects.specification.PlaylistSimplified;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import com.wrapper.spotify.model_objects.specification.PlaylistSimplified;
 // import com.wrapper.spotify.model_objects.specification.Playlist;
 // import java.io.IOException;
 // import java.util.List;
@@ -23,6 +23,7 @@ import spotify.SpotifyUser;
 // import data.FilterOptions;
 import repos.UserRepository;
 import data.User;
+import data.QueueInfo;
 
 /**
  * Controller which hadles all the requests after the user is already logged in.
@@ -94,13 +95,21 @@ public class SpotifyController {
 
     @RequestMapping(value = "/create_queue", method = RequestMethod.GET)
     public String createQueue(Model model) {
-        PlaylistSimplified[] playlists = spotifyUser.getUserPlaylists();
-        model.addAttribute("playlists", playlists);
-        return "create_queue"
+
+        return "create_queue";
     }
 
-    @RequestMapping(value = "/create_queue", method = RequestMethod.POST)
-    public String createQueueSubmit(@ModelAttribute QueueInfo queueInfo, Model model) {
+
+    @RequestMapping(value = "/create_queue/add_component", method = RequestMethod.GET)
+    public String createQueueSubmit(Model model) {
+        PlaylistSimplified[] playlists = spotifyUser.getUserPlaylists();
+        model.addAttribute("playlists", playlists);
+        return "add_component";
+    }
+
+
+    @RequestMapping(value = "/create_queue/add_component", method = RequestMethod.POST)
+    public ModelAndView createQueueSubmit(@ModelAttribute QueueInfo queueInfo, Model model) {
         // Add queue info from submit to database
         return new ModelAndView(new RedirectView("/queues"));
     }

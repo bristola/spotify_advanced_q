@@ -1,6 +1,7 @@
 package data;
 
 import java.util.Date;
+import java.util.Set;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,8 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-// import org.springframework.format.annotation.DateTimeFormat;
-// import org.springframework.context.annotation.ComponentScan;
+import javax.persistence.OneToMany;
+import javax.persistence.CascadeType;
 import org.hibernate.annotations.CreationTimestamp;
 
 @Entity
@@ -28,6 +29,9 @@ public class User implements Serializable {
 
     @Column(name = "username")
     private String username;
+
+    @OneToMany(mappedBy = "ownerUser", cascade = CascadeType.ALL)
+    private Set<Queue> queues;
 
     public User() {
     }
