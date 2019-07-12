@@ -110,6 +110,7 @@ public class SpotifyController {
 
     @RequestMapping(value = "/queue", params = "queueID", method = RequestMethod.GET)
     public String queue(@RequestParam("queueID") String queueID, Model model) {
+        model.addAttribute("queueID", queueID);
         return "queue";
     }
 
@@ -117,6 +118,8 @@ public class SpotifyController {
     public String createQueueSubmit(@RequestParam("queueID") String queueID, Model model) {
         PlaylistSimplified[] playlists = spotifyUser.getUserPlaylists();
         model.addAttribute("playlists", playlists);
+        model.addAttribute("queueID", queueID);
+        model.addAttribute("queueInfo", new QueueInfo());
         return "add_component";
     }
 
