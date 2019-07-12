@@ -127,6 +127,17 @@ public class SpotifyController {
     @RequestMapping(value = "/queue/add_component", params = "queueID", method = RequestMethod.POST)
     public RedirectView createQueueSubmit(@RequestParam("queueID") String queueID, @ModelAttribute QueueInfo queueInfo, Model model, RedirectAttributes attributes) {
         // Add queue info from submit to database
+        Queue q = queueRepository.findById(Long.parseLong(queueID));
+        QueueComponent comp = new QueueComponent(
+                                queueInfo.getPlaylistAdd(),
+                                queueInfo.getGenre(),
+                                queueInfo.getArtist(),
+                                queueInfo.getAlbum(),
+                                queueInfo.getPopularityMin(),
+                                queueInfo.getPopularityMax(),
+                                q);
+        q.addQueueComponent(comp);
+        queueRepository.save(q);
         attributes.addAttribute("queueID", queueID);
         return new RedirectView("/queue");
     }

@@ -1,6 +1,8 @@
 package data;
 
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -46,6 +48,17 @@ public class QueueComponent implements Serializable {
     private Integer popularityMax;
 
     public QueueComponent() {
+    }
+
+    public QueueComponent(String playlist, List<String> genres, List<String> artists, List<String> albums, int popularityMin, int popularityMax, Queue parentQueue) {
+        this.playlist = playlist;
+        this.genres = genres.stream().collect(Collectors.joining(","));
+        System.out.println(this.genres);
+        this.artists = artists.stream().collect(Collectors.joining(","));
+        this.albums = albums.stream().collect(Collectors.joining(","));
+        this.popularityMin = new Integer(popularityMin);
+        this.popularityMax = new Integer(popularityMax);
+        this.parentQueue = parentQueue;
     }
 
     public long getId() {

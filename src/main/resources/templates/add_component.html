@@ -37,14 +37,16 @@
         <select id="album" name="album" th:field="*{album}" data-style="btn-default" class="selectpicker form-control" multiple>
         </select>
 
-        <p>Popularity Minimum: <input type="number" th:field="*{popularityMin}" value="0" min="0" max="100"/></p>
-        <p>Popularity Maximum: <input type="number" th:field="*{popularityMax}" value="100" min="0" max="100"/></p>
+        <p>Popularity Minimum: <input id="popularityMin" type="number" th:field="*{popularityMin}" required/></p>
+        <p>Popularity Maximum: <input id="popularityMax" type="number" th:field="*{popularityMax}" required/></p>
 
         <p><input type="submit" value="Submit" /> <input type="reset" value="Reset" /></p>
     </form>
 
     <script type="text/javascript">
        $(document).ready(function() {
+        document.getElementById("popularityMin").defaultValue = "1";
+        document.getElementById("popularityMax").defaultValue = "100";
         $("#playlistID").change(function() {
           console.log("Changed playlist select!");
           var playlistID = $(this).find(":selected").val();

@@ -60,6 +60,10 @@ public class Queue implements Serializable {
         return queueComponents;
     }
 
+    public void addQueueComponent(QueueComponent queueComponent) {
+        queueComponents.add(queueComponent);
+    }
+
     public void setQueueName(String queueName) {
         this.queueName = queueName;
     }
