@@ -15,7 +15,7 @@
     </head>
     <a href="/signout"><h5>Signout</h5></a>
     <a th:href="@{queue(queueID=${queueID})}"><h5>Cancel</h5></a>
-    <form action="#" th:action="@{queue/add_component(queueID=${queueID})}" th:object="${queueInfo}" method="post">
+    <form action="#" th:action="@{add_component(queueID=${queueID})}" th:object="${queueInfo}" method="post">
 
         <br><label for="playlist">Playlist to add from</label><br>
         <select id="playlistID" path="playlistID" name="playlist" th:field="*{playlistAdd}" data-style="btn-default" class="selectpicker form-control">

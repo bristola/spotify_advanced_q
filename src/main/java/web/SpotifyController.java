@@ -124,10 +124,11 @@ public class SpotifyController {
         return "add_component";
     }
 
-    @RequestMapping(value = "/create_queue/add_component", params = "queueID", method = RequestMethod.POST)
-    public ModelAndView createQueueSubmit(@RequestParam("queueID") String queueID, @ModelAttribute QueueInfo queueInfo, Model model) {
+    @RequestMapping(value = "/queue/add_component", params = "queueID", method = RequestMethod.POST)
+    public RedirectView createQueueSubmit(@RequestParam("queueID") String queueID, @ModelAttribute QueueInfo queueInfo, Model model, RedirectAttributes attributes) {
         // Add queue info from submit to database
-        return new ModelAndView(new RedirectView("/queues/"));
+        attributes.addAttribute("queueID", queueID);
+        return new RedirectView("/queue");
     }
 
     @RequestMapping(value = "/loadPlaylistData", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
