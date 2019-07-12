@@ -13,20 +13,21 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 // import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.http.MediaType;
 import com.wrapper.spotify.model_objects.specification.PlaylistSimplified;
-// import com.wrapper.spotify.model_objects.specification.Playlist;
+import com.wrapper.spotify.model_objects.specification.Playlist;
 // import java.io.IOException;
-// import java.util.List;
+import java.util.List;
 import spotify.SpotifyUser;
-// import spotify.SpotifyUtils;
-// import spotify.Song;
+import spotify.SpotifyUtils;
+import spotify.Song;
 // import data.FilterOptions;
 import repos.UserRepository;
 import repos.QueueRepository;
-import data.User;
-import data.QueueInfo;
-import data.Queue;
+import data.*;
 
 /**
  * Controller which hadles all the requests after the user is already logged in.
@@ -127,6 +128,15 @@ public class SpotifyController {
     public ModelAndView createQueueSubmit(@RequestParam("queueID") String queueID, @ModelAttribute QueueInfo queueInfo, Model model) {
         // Add queue info from submit to database
         return new ModelAndView(new RedirectView("/queues/"));
+    }
+
+    @RequestMapping(value = "/loadGenre", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody List<String> loadGenre(@RequestBody PlaylistCriteria playlistCriteria) {
+        Playlist p = spotifyUser.getPlaylistByID(playlistCriteria.getPlaylistID());
+        List<Song> songs = spotifyUser.getTracksFromPlaylist(p);
+        SpotifyUtils su = new SpotifyUtils();
+        List<String> genres = su.getGenres(songs);
+        return genres;
     }
 
     /*

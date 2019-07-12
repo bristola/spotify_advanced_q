@@ -18,17 +18,17 @@
     <form action="#" th:action="@{queue/add_component(queueID=${queueID})}" th:object="${queueInfo}" method="post">
 
         <br><label for="playlist">Playlist to add from</label><br>
-        <select name="playlist" th:field="*{playlistAdd}" id="dropOperatorSigle" data-style="btn-default" class="selectpicker form-control">
+        <select id="playlistID" path="playlistID" name="playlist" th:field="*{playlistAdd}" data-style="btn-default" class="selectpicker form-control">
             <div th:each="playlist : ${playlists}">
-                <option th:if="${playlist.name} != ${playlistName}" th:value="${playlist.id}" th:text="${playlist.name}"></option>
+                <option th:value="${playlist.id}" th:text="${playlist.name}"></option>
             </div>
         </select>
 
-        <!-- <br><label for="genre">Genre</label><br>
-        <select name="genre" th:field="*{genre}"  id="dropOperator" data-style="btn-default" class="selectpicker form-control" multiple>
-            <option th:each="genre : ${genres}" th:value="${genre}" th:text="${genre}"></option>
+        <br><label for="genre">Genres</label><br>
+        <select id="genre" name="genre" th:field="*{genre}" data-style="btn-default" class="selectpicker form-control" multiple>
         </select>
 
+        <!--
         <br><label for="Artist">Artist</label><br>
         <select name="artist" th:field="*{artist}"  id="dropOperator" data-style="btn-default" class="selectpicker form-control" multiple>
             <option th:each="artist : ${artists}" th:value="${artist}" th:text="${artist}"></option>
@@ -44,4 +44,43 @@
 
         <p><input type="submit" value="Submit" /> <input type="reset" value="Reset" /></p>
     </form>
+
+    <script type="text/javascript">
+       $(document).ready(function() {
+        $("#playlistID").change(function() {
+          console.log("Changed playlist select!");
+          var playlistID = $(this).find(":selected").val();
+          console.log(playlistID);
+          var json = {
+           "playlistID" : playlistID
+          };
+
+          $.ajax({
+           type : "POST",
+           contentType : "application/json",
+           url : "/loadGenre",
+           data : JSON.stringify(json),
+           dataType : 'json',
+           cache : false,
+           timeout : 600000,
+           success : function(data) {
+            console.log("Im in success! Heres the data!");
+            // console.log(data);
+            let html = ""
+            data.forEach(function(element) {
+                html += '<option th:value="${'+element+'}" th:text="${'+element+'}">'+element+'</option>';
+            });
+            // console.log(html);
+            console.log($('#genre').html());
+            $('#genre').html(html).selectpicker('refresh');
+            console.log($('#genre').html());
+           },
+           error : function(e) {
+            alert(e);
+           }
+          });
+        });
+       });
+      </script>
+
 </html>
