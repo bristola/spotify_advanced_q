@@ -130,13 +130,19 @@ public class SpotifyController {
         return new ModelAndView(new RedirectView("/queues/"));
     }
 
-    @RequestMapping(value = "/loadGenre", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody List<String> loadGenre(@RequestBody PlaylistCriteria playlistCriteria) {
+    @RequestMapping(value = "/loadPlaylistData", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody PlaylistInfo loadGenre(@RequestBody PlaylistCriteria playlistCriteria) {
         Playlist p = spotifyUser.getPlaylistByID(playlistCriteria.getPlaylistID());
         List<Song> songs = spotifyUser.getTracksFromPlaylist(p);
         SpotifyUtils su = new SpotifyUtils();
         List<String> genres = su.getGenres(songs);
-        return genres;
+        List<String> albums = su.getAlbums(songs);
+        List<String> artists = su.getArtists(songs);
+        PlaylistInfo pi = new PlaylistInfo();
+        pi.setGenres(genres);
+        pi.setAlbums(albums);
+        pi.setArtists(artists);
+        return pi;
     }
 
     /*

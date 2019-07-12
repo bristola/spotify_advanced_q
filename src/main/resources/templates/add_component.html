@@ -28,19 +28,17 @@
         <select id="genre" name="genre" th:field="*{genre}" data-style="btn-default" class="selectpicker form-control" multiple>
         </select>
 
-        <!--
+
         <br><label for="Artist">Artist</label><br>
-        <select name="artist" th:field="*{artist}"  id="dropOperator" data-style="btn-default" class="selectpicker form-control" multiple>
-            <option th:each="artist : ${artists}" th:value="${artist}" th:text="${artist}"></option>
+        <select id="artist" name="artist" th:field="*{artist}" data-style="btn-default" class="selectpicker form-control" multiple>
         </select>
 
         <br><label for="Album">Album</label><br>
-        <select name="album" th:field="*{album}"  id="dropOperator" data-style="btn-default" class="selectpicker form-control" multiple>
-            <option th:each="album : ${albums}" th:value="${album}" th:text="${album}"></option>
+        <select id="album" name="album" th:field="*{album}" data-style="btn-default" class="selectpicker form-control" multiple>
         </select>
 
         <p>Popularity Minimum: <input type="number" th:field="*{popularityMin}" value="0" min="0" max="100"/></p>
-        <p>Popularity Maximum: <input type="number" th:field="*{popularityMax}" value="100" min="0" max="100"/></p> -->
+        <p>Popularity Maximum: <input type="number" th:field="*{popularityMax}" value="100" min="0" max="100"/></p>
 
         <p><input type="submit" value="Submit" /> <input type="reset" value="Reset" /></p>
     </form>
@@ -58,22 +56,37 @@
           $.ajax({
            type : "POST",
            contentType : "application/json",
-           url : "/loadGenre",
+           url : "/loadPlaylistData",
            data : JSON.stringify(json),
            dataType : 'json',
            cache : false,
            timeout : 600000,
            success : function(data) {
             console.log("Im in success! Heres the data!");
-            // console.log(data);
-            let html = ""
-            data.forEach(function(element) {
+            console.log(data);
+            let genres = data.genres;
+            let albums = data.albums;
+            let artists = data.artists;
+            let html;
+
+            html = ""
+            genres.forEach(function(element) {
                 html += '<option th:value="${'+element+'}" th:text="${'+element+'}">'+element+'</option>';
             });
-            // console.log(html);
-            console.log($('#genre').html());
             $('#genre').html(html).selectpicker('refresh');
-            console.log($('#genre').html());
+
+            html = ""
+            albums.forEach(function(element) {
+                html += '<option th:value="${'+element+'}" th:text="${'+element+'}">'+element+'</option>';
+            });
+            $('#album').html(html).selectpicker('refresh');
+
+            html = ""
+            artists.forEach(function(element) {
+                html += '<option th:value="${'+element+'}" th:text="${'+element+'}">'+element+'</option>';
+            });
+            $('#artist').html(html).selectpicker('refresh');
+
            },
            error : function(e) {
             alert(e);
