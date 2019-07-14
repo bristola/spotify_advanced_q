@@ -65,6 +65,10 @@ public class QueueComponent implements Serializable {
         return id;
     }
 
+    public String getPlaylist() {
+        return playlist;
+    }
+
     public Queue getParentQueue() {
         return parentQueue;
     }

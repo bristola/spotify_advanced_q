@@ -112,6 +112,8 @@ public class SpotifyController {
     @RequestMapping(value = "/queue", params = "queueID", method = RequestMethod.GET)
     public String queue(@RequestParam("queueID") String queueID, Model model) {
         model.addAttribute("queueID", queueID);
+        Queue q = queueRepository.findById(Long.parseLong(queueID));
+        model.addAttribute("components", q.getQueueComponents());
         return "queue";
     }
 
